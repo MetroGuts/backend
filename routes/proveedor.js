@@ -16,12 +16,27 @@ app.get('/', (reg, res, next) =>{
                 errores: err
             })
         }
-        res.status(200).json(proveedores);
-        // res.status(200).json({
-        //     ok: true,
-        //     proveedores: proveedores
-        // })
+        res.status(200).json({
+            ok: true,
+            proveedores: proveedores
+        })
     });   
+});
+
+app.get('/:id', function(req, res, next){
+    Proveedor.findById(req.params.id, (err, proveedor)=>{
+        if(err){ //este if es en caso de que tenga errores
+            return res.status(500).json({
+                ok: false,                       
+                mensaje: 'Error acceso DB',
+                errores: err
+            })
+        }
+        res.status(200).json({
+            ok:true,
+            proveedor:proveedor
+        })
+    })
 })
 
 // Peticion POST
@@ -38,7 +53,7 @@ app.post('/', (req, res)=>{
         localidad: body.localidad,
         provincia: body.provincia,
         telefono: body.telefono,
-        email: body.nombre,
+        email: body.email,
         contacto: body.contacto,
     })
 
@@ -59,7 +74,7 @@ app.post('/', (req, res)=>{
 
 });
 
-//peticion put
+//Petición PUT
 
 app.put('/:id', function(req, res, next){  
     //findByIdAndUpdate --> busca un documento con su id y lo modifica
@@ -73,7 +88,7 @@ app.put('/:id', function(req, res, next){
 
 });
 
-// peticion delete
+// Peticion DELETE
 
 app.delete('/:id', function(req, res, error){
     //findByIdAndRemove --> busca un documento con su id y lo elimina
